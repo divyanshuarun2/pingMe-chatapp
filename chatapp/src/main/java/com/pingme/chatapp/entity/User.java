@@ -1,6 +1,12 @@
 package com.pingme.chatapp.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "UserDB")
 public class User {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private String id;
     private String name;
     private String phoneNumber;
