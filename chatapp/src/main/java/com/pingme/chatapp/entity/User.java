@@ -1,16 +1,23 @@
 package com.pingme.chatapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "UserDB")
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String phoneNumber;
+    @Email
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
 
 
