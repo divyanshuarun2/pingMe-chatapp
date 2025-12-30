@@ -1,10 +1,12 @@
 package com.pingme.chatapp.service.ServiceImpl;
 
+import com.pingme.chatapp.dto.LoginDto;
 import com.pingme.chatapp.dto.UserDto;
 import com.pingme.chatapp.entity.User;
 import com.pingme.chatapp.repository.UserRepository;
 import com.pingme.chatapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,17 @@ public class UserServiceImpl implements UserService {
         userDto.setEmail(savedUser.getEmail());
         userDto.setPhoneNumber(savedUser.getPhoneNumber());
         return userDto;
+
+    }
+    public Boolean userLogin(LoginDto credentails) {
+        User savedUser = userRepository.findByEmail(credentails.getEmail()).orElse(null);
+        if(savedUser!=null){
+            boolean isPasswordMatch = passwordEncoder.matches(credentails.getPassword(), savedUser.getPassword());
+            if(isPasswordMatch){
+                return true;
+            }
+        }
+        return false;
 
     }
 }
