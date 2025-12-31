@@ -44,7 +44,8 @@ public class UserServiceImpl implements UserService {
 
     }
     public Boolean userLogin(LoginDto credentails) {
-        User savedUser = userRepository.findByEmail(credentails.getEmail()).orElse(null);
+        User savedUser = userRepository.findByEmailOrPhoneNumber(credentails.getUsername(),
+                credentails.getUsername()).orElse(null);
         if(savedUser!=null){
             boolean isPasswordMatch = passwordEncoder.matches(credentails.getPassword(), savedUser.getPassword());
             if(isPasswordMatch){
