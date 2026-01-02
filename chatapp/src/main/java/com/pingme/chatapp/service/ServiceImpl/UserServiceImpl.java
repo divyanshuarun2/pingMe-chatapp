@@ -21,6 +21,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto saveUser(User user) {
+        //check if email or phone is present
+        if(userRepository.findByEmail(user.getEmail()).isPresent()){
+           // throw new RuntimeException("Email already Exist!");
+            return null;
+        }
+        if( userRepository.findByPhoneNumber(user.getPhoneNumber()).isPresent()){
+          //  throw new RuntimeException("Phone number is already used. Please try with new number.");
+        return null;
+        }
+
         String encodePassword= passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         try {

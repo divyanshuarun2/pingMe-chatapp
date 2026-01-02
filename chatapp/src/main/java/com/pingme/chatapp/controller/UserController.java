@@ -5,6 +5,7 @@ import com.pingme.chatapp.dto.UserDto;
 import com.pingme.chatapp.entity.User;
 import com.pingme.chatapp.repository.UserRepository;
 import com.pingme.chatapp.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class Controller {
-    @Autowired
-    private UserRepository userRepo;
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -26,7 +25,7 @@ public class Controller {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signUp(@RequestBody User user) {
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody User user) {
         UserDto userDto = userService.saveUser(user);
         if(userDto!=null){
             return new ResponseEntity<>(userDto, HttpStatus.CREATED);
@@ -34,7 +33,7 @@ public class Controller {
 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto credentials){
+    public ResponseEntity<String> login(@Valid @RequestBody LoginDto credentials){
         Boolean isSuccessful = userService.userLogin(credentials);
         if(isSuccessful){
             return new ResponseEntity<>("User credentials are matching, logged-in successful...!"
