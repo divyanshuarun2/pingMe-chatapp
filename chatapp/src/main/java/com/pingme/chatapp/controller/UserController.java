@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -23,8 +24,15 @@ public class UserController {
     public String getHealth() {
         return "ping me application up and running!";
     }
+    @GetMapping("/me")
+    public ResponseEntity<?> getProfile(){
+    return new ResponseEntity<String>("This is your profile",HttpStatus.OK);
 
-    @PostMapping("/signup")
+    //read user from session
+    }
+
+
+    @PostMapping("/auth/signup")
     public ResponseEntity<UserDto> signUp(@Valid @RequestBody User user) {
         UserDto userDto = userService.saveUser(user);
         if(userDto!=null){
@@ -32,13 +40,21 @@ public class UserController {
         }
 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginDto credentials){
         Boolean isSuccessful = userService.userLogin(credentials);
         if(isSuccessful){
+            //create session
+            //set Set-Cookie: JsessionID=xxx
+            //store user info in session
             return new ResponseEntity<>("User credentials are matching, logged-in successful...!"
                     , HttpStatus.OK);
         }
-        return new ResponseEntity<>("Invalid Credentails...",HttpStatusCode.valueOf(401));
+        return new ResponseEntity<>("Invalid Credentails...", HttpStatusCode.valueOf(401));
     }
-}
+    @PostMapping("/auth/logout")
+    public ResponseEntity<?> logout(){
+        return null;
+    }
+
+    }
