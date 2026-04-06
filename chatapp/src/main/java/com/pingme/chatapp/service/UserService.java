@@ -7,5 +7,5 @@ import com.pingme.chatapp.entity.User;
 public interface UserService {
 
     public UserDto saveUser(User user);
-    public Boolean userLogin(LoginDto credentials);
+    public UserDto userLogin(LoginDto credentials);
 }
