@@ -8,4 +8,5 @@ public interface UserService {
 
     public UserDto saveUser(User user);
     public UserDto userLogin(LoginDto credentials);
+
 }

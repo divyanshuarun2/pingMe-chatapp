@@ -2,8 +2,10 @@ package com.pingme.chatapp.controller;
 
 import com.pingme.chatapp.dto.LoginDto;
 import com.pingme.chatapp.dto.UserDto;
+import com.pingme.chatapp.entity.SessionEntity;
 import com.pingme.chatapp.entity.User;
 import com.pingme.chatapp.repository.UserRepository;
+import com.pingme.chatapp.service.SessionService;
 import com.pingme.chatapp.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SessionService sessionService;
+
     @GetMapping("/health")
     public String getHealth() {
         return "ping me application up and running!";
@@ -33,9 +38,18 @@ public class UserController {
     public ResponseEntity<?> getProfile(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session!=null){
-            return new ResponseEntity<>("This is your profile: "+session.getAttribute("userId"),HttpStatus.OK);
+            //check the session associated with userid from DB
+            String jsessionIdFromDB= sessionService.getSession((String)session.getAttribute("userId"));
+            //if session match its is goo confition display the userid
+            if(jsessionIdFromDB.equals(session.getId())){
+                return new ResponseEntity<>("This is your profile: "+session.getAttribute("userId"),HttpStatus.OK);
+
+            } else if (jsessionIdFromDB!=session.getId()) {
+                return new ResponseEntity<>("You hav been logged in from other device with "+session.getAttribute("userId"),HttpStatus.UNAUTHORIZED);
+            }
+            //if not then returned sesion expired... please login again
         }
-        return new ResponseEntity<>("You are not logged in",HttpStatusCode.valueOf(401));
+        return new ResponseEntity<>("You are not logged in or session expired",HttpStatusCode.valueOf(401));
 
     //read user from session
     }
@@ -68,12 +82,17 @@ return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     public ResponseEntity<?> login(@Valid @RequestBody LoginDto credentials, HttpServletRequest request){
         UserDto isSuccessful = userService.userLogin(credentials);
         if(isSuccessful!=null){
-            //create session
+            //create session-- set Set-Cookie: JsessionID=xxx
+            //store user info in session
             HttpSession session = request.getSession(true);
             session.setAttribute("userId",isSuccessful.getEmail());
-            session.setAttribute("Domain",".thehartford.com");
-            //set Set-Cookie: JsessionID=xxx
-            //store user info in session
+
+            //Store session in DB associated with userId
+            SessionEntity userSession = new SessionEntity(isSuccessful.getEmail(),session.getId());
+            //every time new login-save the session
+
+            sessionService.saveSession(userSession);
+
             return new ResponseEntity<>("User credentials are matching, logged-in successful...!"
                     , HttpStatus.OK);
         }
