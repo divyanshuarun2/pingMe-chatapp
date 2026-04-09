@@ -39,26 +39,28 @@ public class UserController {
 
     @GetMapping("/auth/me")
     public ResponseEntity<?> getProfile(HttpServletRequest request){
-        HttpSession session = request.getSession(false);// getting from server memory
-        if(session!=null){
-            // session exists for incoming JsessionId
 
-            //checking if session exists for the incoming cookie/jsessionid
-            SessionEntity existingSession = sessionService.getSession((String)session.getAttribute("userId"));
-            System.out.println("fetching session from db to check if any session of this user exists?");
+        HttpSession session = request.getSession(false);
 
-            if(existingSession!=null && existingSession.getJsessionId().equals(session.getId())){
-                System.out.println("db fetched sessionId: "+existingSession.getJsessionId()+" and server session "+session.getId());
-                return new ResponseEntity<>("This is your profile: "+session.getAttribute("userId"),HttpStatus.OK);
-
-            } else if (existingSession!=null && existingSession.getJsessionId()!=null && !existingSession.getJsessionId().equals(session.getId())) {
-                return new ResponseEntity<>("You hav been logged in from other device, please login again "+session.getAttribute("userId"),HttpStatus.UNAUTHORIZED);
-            }
-            //if not then returned sesion expired... please login again
+        if (session == null) {
+            return ResponseEntity.status(401).body("Session expired or not logged in");
         }
-        return new ResponseEntity<>("You are not logged in or session is expired",HttpStatusCode.valueOf(401));
-//
-//    //read user from session
+
+        String userId = (String) session.getAttribute("userId");
+
+        SessionEntity existingSession = sessionService.getSession(userId);
+
+        if (existingSession == null) {
+            return ResponseEntity.status(401).body("Session expired, please login again");
+        }
+
+        // Check if DB session matches server session
+        if (existingSession.getJsessionId().equals(session.getId())) {
+            return ResponseEntity.ok("Profile for: " + userId);
+        }
+
+        // DB session exists but different JSESSIONID → multiple login detection
+        return ResponseEntity.status(401).body("You were logged in from another device. Please login again.");
     }
 
     @PostMapping("/auth/logout")
@@ -76,11 +78,6 @@ public class UserController {
              }
 
             return new ResponseEntity<>("Not active user, Please login first",HttpStatusCode.valueOf(400));
-
-//        Cookie cookie= new Cookie("JSESSIONID","");
-//        cookie.setPath("/");
-//        cookie.setMaxAge(0);
-//        response.addCookie(cookie);
 
     }
 
