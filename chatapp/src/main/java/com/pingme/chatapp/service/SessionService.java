@@ -4,6 +4,7 @@ import com.pingme.chatapp.entity.SessionEntity;
 
 public interface SessionService {
     void saveSession(SessionEntity session);
-    String getSession(String userId);
+    SessionEntity getSession(String email);
 
+    Boolean deleteSessionEntry(String userId);
 }

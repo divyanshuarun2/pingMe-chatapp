@@ -7,5 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SessionRepository extends JpaRepository<SessionEntity,Long> {
 
+    
+
+    void deleteByEmail(String email);
+
     SessionEntity findByEmail(String email);
 }

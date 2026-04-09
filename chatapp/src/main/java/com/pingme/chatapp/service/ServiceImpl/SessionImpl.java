@@ -5,6 +5,7 @@ import com.pingme.chatapp.repository.SessionRepository;
 import com.pingme.chatapp.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -15,19 +16,39 @@ public class SessionImpl implements SessionService {
     SessionRepository sessionRepository;
 
     @Override
-    public void saveSession(SessionEntity session) {
-        session.setTimeFormat(LocalDateTime.now());
-        sessionRepository.save(session);
+    //@Transactional
+    public void saveSession(SessionEntity currentSession) {
+        SessionEntity existingSession = sessionRepository.findByEmail(currentSession.getEmail());
+        if(existingSession!=null) {
+         //update existing session
+            existingSession.setJsessionId(currentSession.getJsessionId());
+            existingSession.setTimeFormat(LocalDateTime.now());
+            sessionRepository.save(existingSession);
+            return;
+     }
+     //  new
+        currentSession.setTimeFormat(LocalDateTime.now());
+        SessionEntity saveNewSession = sessionRepository.save(currentSession);
 
     }
 
     @Override
-    public String getSession(String userId) {
-        SessionEntity userSession = sessionRepository.findByEmail(userId);
-        if(userSession!=null){
-            return userSession.getJsessionId();
+    public SessionEntity getSession(String email) {
+        return sessionRepository.findByEmail(email);
+
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteSessionEntry(String userId) {
+        try {
+            sessionRepository.deleteByEmail(userId);
+
         }
-        return null;
+        catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        return true;
 
     }
 }
