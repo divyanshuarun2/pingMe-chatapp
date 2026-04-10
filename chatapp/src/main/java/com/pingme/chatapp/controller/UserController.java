@@ -4,10 +4,10 @@ import com.pingme.chatapp.dto.LoginDto;
 import com.pingme.chatapp.dto.UserDto;
 import com.pingme.chatapp.entity.SessionEntity;
 import com.pingme.chatapp.entity.User;
-import com.pingme.chatapp.repository.UserRepository;
+
 import com.pingme.chatapp.service.SessionService;
 import com.pingme.chatapp.service.UserService;
-import jakarta.servlet.http.Cookie;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,10 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api")
