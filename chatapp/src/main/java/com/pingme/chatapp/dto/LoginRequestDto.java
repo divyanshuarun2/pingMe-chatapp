@@ -1,6 +1,6 @@
 package com.pingme.chatapp.dto;
 // used by user to rpovide username and password
-public class LoginDto {
+public class LoginRequestDto {
     private String password;
     private String username;
 

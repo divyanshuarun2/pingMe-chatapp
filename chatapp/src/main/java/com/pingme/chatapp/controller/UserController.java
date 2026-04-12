@@ -1,6 +1,6 @@
 package com.pingme.chatapp.controller;
 
-import com.pingme.chatapp.dto.LoginDto;
+import com.pingme.chatapp.dto.LoginRequestDto;
 import com.pingme.chatapp.dto.UserDto;
 import com.pingme.chatapp.entity.SessionEntity;
 import com.pingme.chatapp.entity.User;
@@ -87,8 +87,8 @@ public class UserController {
 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @PostMapping("/auth/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginDto credentials, HttpServletRequest request){
-        UserDto isSuccessful = userService.userLogin(credentials);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto credentials, HttpServletRequest request){
+        UserDto isSuccessful = userService.userSessionLogin(credentials);
         if(isSuccessful!=null){
             //create session-- set Set-Cookie: JsessionID=xxx
             HttpSession session = request.getSession(true);
@@ -103,7 +103,7 @@ return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>("User credentials are matching, logged-in successful...!"
                     , HttpStatus.OK);
         }
-        return new ResponseEntity<>("Invalid Credentails...", HttpStatusCode.valueOf(401));
+        return new ResponseEntity<>("Invalid Credentials...", HttpStatusCode.valueOf(401));
     }
 
     }

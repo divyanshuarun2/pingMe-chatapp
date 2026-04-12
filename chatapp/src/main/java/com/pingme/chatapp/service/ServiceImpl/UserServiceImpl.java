@@ -1,13 +1,19 @@
 package com.pingme.chatapp.service.ServiceImpl;
 
-import com.pingme.chatapp.dto.LoginDto;
+import com.pingme.chatapp.dto.LoginRequestDto;
+import com.pingme.chatapp.dto.LoginResponseDto;
 import com.pingme.chatapp.dto.UserDto;
 import com.pingme.chatapp.entity.User;
 import com.pingme.chatapp.repository.UserRepository;
+import com.pingme.chatapp.security.JwtUtil;
 import com.pingme.chatapp.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    JwtUtil jwtUtil;
 
     @Override
     public UserDto saveUser(User user) {
@@ -52,16 +61,30 @@ public class UserServiceImpl implements UserService {
         return userDto;
 
     }
-    public UserDto userLogin(LoginDto credentails) {
-        User savedUser = userRepository.findByEmailOrPhoneNumber(credentails.getUsername(),
-                credentails.getUsername()).orElse(null);
-        if(savedUser!=null){
-            boolean isPasswordMatch = passwordEncoder.matches(credentails.getPassword(), savedUser.getPassword());
-            if(isPasswordMatch){
-                return converToUserDto(savedUser);
+    @Override
+    public UserDto userSessionLogin(LoginRequestDto credentials) {
+        User savedUser = userRepository.findByEmailOrPhoneNumber(credentials.getUsername(),
+                credentials.getUsername()).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+
+            boolean isPasswordMatch = passwordEncoder.matches(credentials.getPassword(), savedUser.getPassword());
+            if(!isPasswordMatch){
+                throw new
+                        ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid Password");
             }
+
+        return converToUserDto(savedUser);
+
+    }
+    @Override
+    public LoginResponseDto userJwtLogin(LoginRequestDto credentials){
+
+        User user = userRepository.findByEmailOrPhoneNumber(credentials.getUsername(), credentials.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Username not Found"));
+        if(!passwordEncoder.matches(credentials.getPassword(), user.getPassword())){
+          return null;
         }
-        return null;
+        String token = jwtUtil.generateToken(user.getEmail());
+        return new LoginResponseDto(token,user.getEmail(),"Logged in Successfully");
+
 
     }
 
