@@ -1,15 +1,15 @@
 package com.pingme.chatapp.repository;
 
-import com.pingme.chatapp.entity.User;
+import com.pingme.chatapp.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long> {
-    Optional<User> findByEmailOrPhoneNumber(String email,String phoneNumber);
+public interface UserRepository extends JpaRepository<UserEntity,Long> {
+    Optional<UserEntity> findByEmailOrPhoneNumber(String email, String phoneNumber);
 
-    Optional<User> findByEmail(String email);
-    Optional<User> findByPhoneNumber(String phoneNumber);
+    Optional<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByPhoneNumber(String phoneNumber);
 }

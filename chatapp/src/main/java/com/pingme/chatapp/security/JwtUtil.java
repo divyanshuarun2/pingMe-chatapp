@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 @Component
 public class JwtUtil {
@@ -17,7 +15,7 @@ public class JwtUtil {
     private String jwtSecretString;
 
     @Value("${jwt.expiration}")
-    private long jwtExpiratiomMs;
+    private long jwtExpirations;
 
     //get signing key from secret string
     private SecretKey getSecretKey(String jwtSecretString){
@@ -34,7 +32,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiratiomMs))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirations))
                 .signWith(getSecretKey(jwtSecretString))
                 .compact();
     }

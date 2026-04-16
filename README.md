@@ -1,5 +1,5 @@
 # pingMe-chatapp
-A Full stack chat and mini shop application, built with Java Springboot (backend) and React (Frontend), featuring real-time messaging, user authentication, and deployment ready architecture.
+A Full stack chat and mini shop application, built with Java Springboot (backend) and React (Frontend), featuring real-time messaging, userEntity authentication, and deployment ready architecture.
 It is a real time  chat application with a mini e-consumer module,designed to showcase full-stack development skills:
 1. Backend: Java 17, SpringBoot, Spring Security, JPA, Web Socket
 2. Frontend: React.js

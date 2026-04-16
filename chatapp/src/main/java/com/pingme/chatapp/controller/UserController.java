@@ -3,7 +3,7 @@ package com.pingme.chatapp.controller;
 import com.pingme.chatapp.dto.LoginRequestDto;
 import com.pingme.chatapp.dto.UserDto;
 import com.pingme.chatapp.entity.SessionEntity;
-import com.pingme.chatapp.entity.User;
+import com.pingme.chatapp.entity.UserEntity;
 
 import com.pingme.chatapp.service.SessionService;
 import com.pingme.chatapp.service.UserService;
@@ -79,8 +79,8 @@ public class UserController {
 
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<UserDto> signUp(@Valid @RequestBody User user) {
-        UserDto userDto = userService.saveUser(user);
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserEntity userEntity) {
+        UserDto userDto = userService.saveUser(userEntity);
         if(userDto!=null){
             return new ResponseEntity<>(userDto, HttpStatus.CREATED);
         }

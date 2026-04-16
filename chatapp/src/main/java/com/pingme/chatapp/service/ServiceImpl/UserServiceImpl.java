@@ -3,7 +3,7 @@ package com.pingme.chatapp.service.ServiceImpl;
 import com.pingme.chatapp.dto.LoginRequestDto;
 import com.pingme.chatapp.dto.LoginResponseDto;
 import com.pingme.chatapp.dto.UserDto;
-import com.pingme.chatapp.entity.User;
+import com.pingme.chatapp.entity.UserEntity;
 import com.pingme.chatapp.repository.UserRepository;
 import com.pingme.chatapp.security.JwtUtil;
 import com.pingme.chatapp.service.UserService;
@@ -28,22 +28,22 @@ public class UserServiceImpl implements UserService {
     JwtUtil jwtUtil;
 
     @Override
-    public UserDto saveUser(User user) {
+    public UserDto saveUser(UserEntity userEntity) {
         //check if email or phone is present
-        if(userRepository.findByEmail(user.getEmail()).isPresent()){
+        if(userRepository.findByEmail(userEntity.getEmail()).isPresent()){
            // throw new RuntimeException("Email already Exist!");
             return null;
         }
-        if( userRepository.findByPhoneNumber(user.getPhoneNumber()).isPresent()){
+        if( userRepository.findByPhoneNumber(userEntity.getPhoneNumber()).isPresent()){
           //  throw new RuntimeException("Phone number is already used. Please try with new number.");
         return null;
         }
 
-        String encodePassword= passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodePassword);
+        String encodePassword= passwordEncoder.encode(userEntity.getPassword());
+        userEntity.setPassword(encodePassword);
         try {
-            User savedUser = userRepository.save(user);
-            return converToUserDto(savedUser);
+            UserEntity savedUserEntity = userRepository.save(userEntity);
+            return converToUserDto(savedUserEntity);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -53,37 +53,37 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private UserDto converToUserDto(User savedUser) {
+    private UserDto converToUserDto(UserEntity savedUserEntity) {
         UserDto userDto= new UserDto();
-        userDto.setName(savedUser.getName());
-        userDto.setEmail(savedUser.getEmail());
-        userDto.setPhoneNumber(savedUser.getPhoneNumber());
+        userDto.setName(savedUserEntity.getName());
+        userDto.setEmail(savedUserEntity.getEmail());
+        userDto.setPhoneNumber(savedUserEntity.getPhoneNumber());
         return userDto;
 
     }
     @Override
     public UserDto userSessionLogin(LoginRequestDto credentials) {
-        User savedUser = userRepository.findByEmailOrPhoneNumber(credentials.getUsername(),
+        UserEntity savedUserEntity = userRepository.findByEmailOrPhoneNumber(credentials.getUsername(),
                 credentials.getUsername()).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
 
-            boolean isPasswordMatch = passwordEncoder.matches(credentials.getPassword(), savedUser.getPassword());
+            boolean isPasswordMatch = passwordEncoder.matches(credentials.getPassword(), savedUserEntity.getPassword());
             if(!isPasswordMatch){
                 throw new
                         ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid Password");
             }
 
-        return converToUserDto(savedUser);
+        return converToUserDto(savedUserEntity);
 
     }
     @Override
     public LoginResponseDto userJwtLogin(LoginRequestDto credentials){
 
-        User user = userRepository.findByEmailOrPhoneNumber(credentials.getUsername(), credentials.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Username not Found"));
-        if(!passwordEncoder.matches(credentials.getPassword(), user.getPassword())){
+        UserEntity userEntity = userRepository.findByEmailOrPhoneNumber(credentials.getUsername(), credentials.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Username not Found"));
+        if(!passwordEncoder.matches(credentials.getPassword(), userEntity.getPassword())){
           return null;
         }
-        String token = jwtUtil.generateToken(user.getEmail());
-        return new LoginResponseDto(token,user.getEmail(),"Logged in Successfully");
+        String token = jwtUtil.generateToken(userEntity.getEmail());
+        return new LoginResponseDto(token, userEntity.getEmail(),"Logged in Successfully");
 
 
     }
