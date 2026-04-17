@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
+
 @Component
 public class JwtUtil {
 
@@ -16,6 +18,9 @@ public class JwtUtil {
 
     @Value("${jwt.expiration}")
     private long jwtExpirations;
+
+    @Value("${jwt.refresh.expiration}")
+    private long jwtRefreshExpiration;
 
     //get signing key from secret string
     private SecretKey getSecretKey(String jwtSecretString){
@@ -36,14 +41,26 @@ public class JwtUtil {
                 .signWith(getSecretKey(jwtSecretString))
                 .compact();
     }
+    public String generateRefreshToken(String email){
+        return Jwts.builder()
+                .signWith(getSecretKey(jwtSecretString))
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis()+jwtRefreshExpiration))
+                .claim("tokenType","refresh")
+                .compact();
+    }
     private Claims getAllClaims(String token){
         Jwt parse = Jwts.parserBuilder()
                 .setSigningKey(getSecretKey(jwtSecretString)).build()
-                .parse(token);
+                .parseClaimsJws(token);
         System.out.println(parse.toString());
         return (Claims) parse.getBody();
 
 
+    }
+    public Date getExpiry(String token){
+        return getAllClaims(token).getExpiration();
     }
     public String extractUsername(String token){
         return getAllClaims(token).getSubject();

@@ -4,6 +4,7 @@ import com.pingme.chatapp.dto.LoginRequestDto;
 import com.pingme.chatapp.dto.LoginResponseDto;
 import com.pingme.chatapp.dto.UserDto;
 import com.pingme.chatapp.entity.UserEntity;
+import com.pingme.chatapp.security.JwtUtil;
 import com.pingme.chatapp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,16 @@ public class JwtController {
         if(userDetails!=null)
         return ResponseEntity.ok("Logged in as: "+userDetails.getUsername());
         return ResponseEntity.status(401).body("Not Authenticated");
+
+    }
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestHeader("Authorization") String authHeader ){
+        //extract refresh token from auth header
+        String newAccessToken= userService.getAccessTokenfromRefreshToken(authHeader);
+        if(newAccessToken!=null){
+            return ResponseEntity.ok(newAccessToken);
+        }
+        return ResponseEntity.status(401).body("Refresh token is invalid");
 
     }
 }

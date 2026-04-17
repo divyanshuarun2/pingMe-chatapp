@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70cd8c23-0475-4ef1-adf8-6e232466caa6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/security/JwtFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/ServiceImpl/UserDetailsServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/entity/RefreshToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/repository/RefreshTokenRepo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/mvnw.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/config/Configurations.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/config/Configurations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/entity/UserEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/controller/JwtController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/controller/JwtController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/dto/LoginResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/dto/LoginResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/security/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/security/JwtUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/ServiceImpl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/ServiceImpl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/UserService.java" afterDir="false" />
@@ -29,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
