@@ -1,6 +1,8 @@
 package com.pingme.chatapp.security;
 
 import com.pingme.chatapp.service.ServiceImpl.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         //Removing Bearer from token
+        try{
         String token = authHeader.substring(7);
         //get username from token
         String tokenUserName= jwtUtil.extractUsername(token);
@@ -53,7 +56,20 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().
                         setAuthentication(authToken);
             }
+        }}
+        catch (ExpiredJwtException e){
+            response.setStatus(401);
+            response.setContentType("application/json");
+            response.getWriter().write("{error:token expired}");
+            return;
         }
+        catch (JwtException e){
+            response.setStatus(401);
+            response.setContentType("application/json");
+            response.getWriter().write("{error:Invalid Token}");
+            return;
+        }
+
         filterChain.doFilter(request,response);
     }
 }
