@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final String successMessage= "You have logged in successfully!!";
+    //private final String successMessage= "You have logged in successfully!!";
 
     UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
@@ -73,19 +73,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponseDto jwtLogin(LoginDto credentials) {
         User savedUser = userRepository.findByEmailOrPhoneNumber(credentials.getUsername(),
-                credentials.getUsername()).orElse(null);
-        if (savedUser != null) {
+                credentials.getUsername()).orElseThrow(()->new RuntimeException("User Not Found"));
+        //check password
             boolean isPasswordMatch = passwordEncoder.matches(credentials.getPassword(), savedUser.getPassword());
-            if (isPasswordMatch) {
-              //create token
-                String accessToken = jwtUtil.createAccessToken(savedUser.getEmail());
-                //create login response and return
-
-                return new LoginResponseDto(accessToken, savedUser.getEmail(),successMessage);
+            if (!isPasswordMatch) {
+              throw new RuntimeException("Invalid Password");
             }
-            return new LoginResponseDto("",savedUser.getEmail(),"Invalid Password");
-        }
-        return  new LoginResponseDto("",credentials.getUsername(),"! No account found with given username or phone no.");
+            //create token
+        String accessToken = jwtUtil.createAccessToken(savedUser.getEmail());
+        //create login response and return
+        return new LoginResponseDto(accessToken, savedUser.getEmail(),"Login Successful");
     }
     }
 
