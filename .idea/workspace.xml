@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70cd8c23-0475-4ef1-adf8-6e232466caa6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/security/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chatapp/src/test/java/com/pingme/chatapp/JwtUtilTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/dto/LoginResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapp/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/ServiceImpl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/ServiceImpl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,15 +48,16 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ChatappApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "19516f00",
+    "git-widget-placeholder": "jwtFeature",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/2164675/OneDrive - Cognizant/Desktop/ping e/pingMe-chatapp",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.JwtUtilTest">
+  <component name="RunManager" selected="Spring Boot.ChatappApplication">
     <configuration name="JwtUtilTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chatapp" />
       <extension name="coverage">
@@ -74,22 +69,6 @@
       <option name="PACKAGE_NAME" value="com.pingme.chatapp" />
       <option name="MAIN_CLASS_NAME" value="com.pingme.chatapp.JwtUtilTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JwtUtilTest.shouldGetUsername" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="chatapp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.pingme.chatapp.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.pingme.chatapp" />
-      <option name="MAIN_CLASS_NAME" value="com.pingme.chatapp.JwtUtilTest" />
-      <option name="METHOD_NAME" value="shouldGetUsername" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -142,13 +121,27 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ChatappApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="chatapp" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.pingme.chatapp.ChatappApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.pingme.chatapp.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.ChatappApplication" />
         <item itemvalue="JUnit.JwtUtilTest" />
         <item itemvalue="JUnit.JwtUtilTest.shouldValidateToken" />
         <item itemvalue="JUnit.JwtUtilTest.shouldRejectTamperedToken" />
         <item itemvalue="JUnit.JwtUtilTest.shouldReturnClaims" />
-        <item itemvalue="JUnit.JwtUtilTest.shouldGetUsername" />
       </list>
     </recent_temporary>
   </component>
@@ -185,6 +178,15 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/chatapp/src/main/java/com/pingme/chatapp/service/SessionService.java</url>
+          <line>8</line>
+          <properties class="com.pingme.chatapp.service.SessionService" method="deleteSessionEntry">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
